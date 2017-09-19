@@ -1,0 +1,43 @@
+#version 330 core
+layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
+layout (location = 2) in vec2 texCoords;
+
+out vec2 TexCoords;
+
+uniform mat4 model;
+uniform mat4 base;
+uniform mat4 leftThigh;
+uniform mat4 rightThigh;
+uniform mat4 leftLeg;
+uniform mat4 rightLeg;
+uniform mat4 leftFoot;
+uniform mat4 rightFoot;
+uniform mat4 upperBody;
+uniform mat4 leftArm;
+uniform mat4 rightArm;
+uniform mat4 leftHand;
+uniform mat4 rightHand;
+uniform mat4 submodel;
+uniform mat4 cameraMatrix;
+uniform int objectID=1;
+
+void main()
+{
+	if(objectID==0){gl_Position = cameraMatrix *submodel* vec4(position, 1.0f);} //surrounder
+	else if(objectID==1){gl_Position = cameraMatrix * model * base*vec4(position, 1.0f);} //main body
+	else if(objectID==2){gl_Position = cameraMatrix * model * base*leftThigh*vec4(position, 1.0f);}  //left thigh
+	else if(objectID==3){gl_Position = cameraMatrix * model * base*rightThigh*vec4(position, 1.0f);}  //right thigh
+	else if(objectID==4){gl_Position = cameraMatrix * model * base*leftThigh * leftLeg * vec4(position, 1.0f);}  //left leg
+	else if(objectID==5){gl_Position = cameraMatrix * model * base*rightThigh* rightLeg* vec4(position, 1.0f);}  //right leg
+	else if(objectID==6){gl_Position = cameraMatrix * model * base*leftThigh * leftLeg * leftFoot* vec4(position, 1.0f);}  //left foot
+	else if(objectID==7){gl_Position = cameraMatrix * model * base*rightThigh* rightLeg* rightFoot* vec4(position, 1.0f);}  //right foot
+	else if(objectID==8){gl_Position = cameraMatrix * model * base*upperBody * vec4(position, 1.0f);}  //upper body
+	else if(objectID==9){gl_Position = cameraMatrix * model * base*upperBody * leftArm * vec4(position, 1.0f);}  //left arm
+	else if(objectID==10){gl_Position = cameraMatrix * model *base* upperBody * rightArm * vec4(position, 1.0f);}  //right arm
+	else if(objectID==11){gl_Position = cameraMatrix * model *base* upperBody * leftArm * leftHand * vec4(position, 1.0f);}  //left hand
+	else if(objectID==12){gl_Position = cameraMatrix * model *base* upperBody * rightArm * rightHand * vec4(position, 1.0f);}  //right hand
+	else {gl_Position = cameraMatrix * model *vec4(position, 1.0f);}
+
+    TexCoords = texCoords;
+}
